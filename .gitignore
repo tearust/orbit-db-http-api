@@ -66,4 +66,6 @@ typings/
 certs/
 
 # ignore local db repository
-orbitdb/
+.orbitdb/
+
+

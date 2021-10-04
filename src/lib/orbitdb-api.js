@@ -12,6 +12,7 @@ class OrbitdbAPI {
         let dbMiddleware, addEventListener;
 
         listener = (server_opts.http1 ? Http : Http2)[server_opts.secure ? 'createSecureServer' : 'createServer'](server_opts.http2_opts);
+
         this.server = new Hapi.Server({
             listener,
             tls: server_opts.secure,
@@ -101,20 +102,25 @@ class OrbitdbAPI {
             {
                 method: ['POST', 'PUT'],
                 path: '/db',
-                handler: async (request, _h) => {
+                handler: dbMiddleware(async (request, _h) => {
                     let db, payload;
                     payload = request.payload;
                     db = await dbm.get(payload.dbname, payload);
                     return dbm.db_info(db.dbname);
-                }
+                })
             },
             {
                 method: ['POST', 'PUT'],
                 path: '/db/{dbname}',
                 handler: async (request, _h) => {
-                    let db;
-                    db = await dbm.get(request.params.dbname, request.payload);
-                    return dbm.db_info(db.dbname);
+                    try{
+                        let db;
+                        db = await dbm.get(request.params.dbname, request.payload);
+                        return dbm.db_info(db.dbname);
+                    }catch(e){
+                        return e.toString();
+                    }
+                    
                 }
             },
             {
