@@ -129,8 +129,8 @@ class DBManager {
         const db_address = await this.orbitdb.determineAddress(key_value_name, 'keyvalue', {
             accessController: {
                 type: 'tea',
-                address: 'tearust2',
-                write: [],
+                address: 'tearust5',
+                // write: [],
             },
             meta: {
                 v: 1
@@ -138,11 +138,18 @@ class DBManager {
         });
         const db = await this.get(db_address);
         
-        if(process.env.BOOTNODE){
-            const me_id = this.orbitdb.identity.id;
-            let aa = await db.access.grant('write', me_id);
-            if(aa !== false){
-                console.log('add write access success => '+me_id);
+        const me_id = this.orbitdb.identity.id;
+        await db.access.grant('write', me_id);
+        
+        let list = process.env.ADMIN_LIST;
+        if(list){
+            list = list.split(',');
+            for(let i=0, len=list.length; i<len; i++){
+                const uid = list[i];
+                let aa = await db.access.grant('write', uid);
+                if(aa !== false){
+                    console.log('add write access success => '+uid);
+                }
             }
         }
     

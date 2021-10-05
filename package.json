@@ -14,8 +14,8 @@
     "db"
   ],
   "scripts": {
-    "local": "BOOTNODE=true SEED=TOM ADMIN_SEED_LIST=[] node src/cli.js api --ipfs-host 127.0.0.1 --orbitdb-dir .orbitdb --no-https --http1 --api-port 6001",
-    "other": "BOOTNODE=true SEED=JERRY BOOTNODE=true node src/cli.js api --ipfs-host 127.0.0.1 --ipfs-port 5002 --orbitdb-dir .orbitdb --no-https --http1 --api-port 6002",
+    "local": "SEED=TOM ADMIN_LIST=02a153a93f5b3f98b8956b55306195e7017b6c32da2e73c582f5ac626788adc5ae,02e84c52dedc940a1cc515fea9e597232c6df7d269544e29b6de73d58a349a1992 node src/cli.js api --ipfs-host 127.0.0.1 --orbitdb-dir .orbitdb --no-https --http1 --api-port 6001",
+    "other": "SEED=JERRY ADMIN_LIST=02a153a93f5b3f98b8956b55306195e7017b6c32da2e73c582f5ac626788adc5ae,02e84c52dedc940a1cc515fea9e597232c6df7d269544e29b6de73d58a349a1992 node src/cli.js api --ipfs-host 127.0.0.1 --ipfs-port 5002 --orbitdb-dir .orbitdb --no-https --http1 --api-port 6002",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Phillip Mackintosh, Hayden Young",

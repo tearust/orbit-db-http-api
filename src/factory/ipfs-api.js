@@ -61,7 +61,7 @@ async function api_factory(ipfs_host, ipfs_port, orbitdb_dir, orbitdb_opts, serv
         port: ipfs_port
     });
 
-    const xx = ['BOOTNODE', 'SEED', 'ADMIN_SEED_LIST'];
+    const xx = ['SEED', 'ADMIN_LIST'];
     xx.forEach((key)=>{
         console.log(`${key} => ${process.env[key]}`);
     });
