@@ -108,7 +108,6 @@ async function init () {
         }
 
         await orbitdb_api.server.start()
-        console.log('args', args);
         console.log(`Server running on port ${api_port}`);
 
     } catch(err) {

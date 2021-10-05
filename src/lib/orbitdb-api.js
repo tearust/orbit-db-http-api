@@ -35,7 +35,10 @@ class OrbitdbAPI {
                 let db
                 db = await dbm.get(request.params.dbname)
                 return Promise.resolve((fn(db, request, h)))
-                    .catch((err) => {throw err});
+                    .catch((err) => {
+                        console.error('api error =>', err);
+                        throw err;
+                    });
         };
 
         rawiterator = (db, request, _h) =>
@@ -126,7 +129,7 @@ class OrbitdbAPI {
             {
                 method: 'GET',
                 path: '/db/{dbname}',
-                handler: (request, _h) => dbm.db_info(request.params.dbname)
+                handler: (request, _h) => dbm.info(request.params.dbname)
             },
             {
                 method: 'DELETE',

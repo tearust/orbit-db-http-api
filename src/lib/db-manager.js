@@ -1,5 +1,9 @@
+const _ = require('lodash');
+
 class DBManager {
     constructor(orbitdb){
+        this.orbitdb = orbitdb;
+
         let _dbs = {};
 
         let find_db = (dbn)  => {
@@ -22,7 +26,10 @@ class DBManager {
             if (db) {
                 return db;
             } else {
-                console.log(`Opening db ${dbn}`);
+                params = _.merge({
+                    create: false,
+                }, params);
+                console.log(`Opening db ${dbn}`, params);
                 db = await orbitdb.open(dbn, params);
                 await db.load();
                 console.log(`Loaded db ${db.dbname}`);
@@ -65,10 +72,11 @@ class DBManager {
             return _db_write(db);
         }
 
-        this.db_info = (dbn) => {
+        this.db_info = async (dbn) => {
             let db = find_db(dbn);
             if (!db) return {};
             let __db_write = _db_write(db)
+            __db_write = Array.from(__db_write);
             return {
                 address: db.address,
                 dbname: db.dbname,
@@ -108,6 +116,55 @@ class DBManager {
         this.identity = () => {
             return orbitdb.identity;
         };
+    }
+
+    async _init(){
+        // init keyvalue store
+        const key_value_name = 'key_value_store';
+        // await this.get(key_value_name, {
+        //     create: true,
+        //     type: 'keyvalue'
+        // });
+
+        const db_address = await this.orbitdb.determineAddress(key_value_name, 'keyvalue', {
+            accessController: {
+                type: 'tea',
+                address: 'tearust2',
+                write: [],
+            },
+            meta: {
+                v: 1
+            }
+        });
+        const db = await this.get(db_address);
+        
+        if(process.env.BOOTNODE){
+            const me_id = this.orbitdb.identity.id;
+            let aa = await db.access.grant('write', me_id);
+            if(aa !== false){
+                console.log('add write access success => '+me_id);
+            }
+        }
+    
+        
+        const x = await this.db_info(db_address);
+        console.log(1, x);
+
+
+        console.log('dbm init success');
+    }
+
+
+    async info(dbn){
+        try{
+
+            await this.get(dbn, {});
+        }catch(e){
+            console.error(e);
+        }
+        
+
+        return await this.db_info(dbn);
     }
 }
 

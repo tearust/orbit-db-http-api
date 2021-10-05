@@ -8,24 +8,38 @@ services:
       - 5001:5001
       - 8080:8080
     volumes:
+      - .ipfs_data:/data/ipfs
       - .ipfs:/ipfs/config
     environment:
       IPFS_SWARM_KEY_FILE: /ipfs/config/swarm.key
     command: ["daemon", "--migrate", "--enable-pubsub-experiment"]
 
-  orbitdb:
-    image: orbitdb/orbit-db-http-api:1151
-    container_name: orbitdb
-    depends_on: 
-      - "ipfs"
-    restart: always
+
+  ipfs1:
+    image: ipfs/go-ipfs:v0.8.0
+    container_name: ipfs1
     ports:
-      - 6001:6001
+      - 5002:5001
     volumes:
-      - .orbitdb:/orbitdb
-      - ./orbit_conf.json:/orbit_conf.json
-    command: ["node", "src/cli.js", "api", "--orbitdb-dir", "/orbitdb", "--no-https", "--http1", "--api-port", "6001"]
-    environment: 
-      - IPFS_HOST=ipfs
-      - IPFS_PORT=5001
-      - ORBITDB_CONF=/orbit_conf.json
+      - .ipfs:/ipfs/config
+    environment:
+      IPFS_SWARM_KEY_FILE: /ipfs/config/swarm.key
+    command: ["daemon", "--migrate", "--enable-pubsub-experiment"]
+
+  # orbitdb1:
+  #   image: tearust/tea-orbit-db-http-api:v0.0.2
+  #   container_name: orbitdb1
+  #   depends_on: 
+  #     - "ipfs1"
+  #   restart: always
+  #   ports:
+  #     - 6002:6001
+  #   volumes:
+  #     - .:/api
+  #     - .orbitdb:/orbitdb
+  #     - ./orbit_conf.json:/orbit_conf.json
+  #   command: ["node", "src/cli.js", "api", "--orbitdb-dir", "/orbitdb", "--no-https", "--http1", "--api-port", "6001"]
+  #   environment: 
+  #     - IPFS_HOST=ipfs1
+  #     - IPFS_PORT=5001
+  #     - SEED=root

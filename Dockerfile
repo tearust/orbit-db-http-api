@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:15.14.0-alpine3.13
 
 RUN mkdir api
 
@@ -6,6 +6,6 @@ WORKDIR /api
 
 COPY . .
 
-RUN npm ci  --no-color --only=prod
+RUN npm i
 
 CMD ["node", "src/cli.js"]
