@@ -10,10 +10,12 @@ services:
       - 8080:8080
     volumes:
       - .ipfs_data:/data/ipfs
+      
       - .ipfs:/ipfs/config
     environment:
       IPFS_SWARM_KEY_FILE: /ipfs/config/swarm.key
-    command: ["daemon", "--migrate", "--enable-pubsub-experiment"]
+    entrypoint: []
+    command: sh -c "/ipfs/config/start_ipfs daemon --migrate --enable-pubsub-experiment"
 
   orbitdb:
     image: tearust/tea-orbit-db-http-api:v0.0.4
