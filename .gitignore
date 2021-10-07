@@ -63,12 +63,16 @@ typings/
 *.key
 certs/
 
+.DS_Store
+.vscode
+.idea
+
 !.ipfs/swarm.key
 
 # ignore local db repository
 .orbitdb/
 .ipfs_data
 .env
-.env.*
+!.env.template
 
 
