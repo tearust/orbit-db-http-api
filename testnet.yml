@@ -22,7 +22,7 @@ services:
     restart: always
     ports:
       - 6001:6001
-    env_file: .env.test
+    env_file: .env
     volumes:
       - ./src:/api/src
       - .orbitdb:/orbitdb
