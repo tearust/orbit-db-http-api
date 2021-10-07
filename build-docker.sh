@@ -1,4 +1,4 @@
-tag=v0.0.2
+tag=v0.0.4
 echo building tea-orbit-db-http-api..
 
 docker build . -t tearust/tea-orbit-db-http-api:$tag

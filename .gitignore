@@ -68,5 +68,7 @@ certs/
 # ignore local db repository
 .orbitdb/
 .ipfs_data
+.env
+.env.*
 
 
