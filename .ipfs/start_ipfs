@@ -63,7 +63,7 @@ ipfs bootstrap add /ip4/139.198.14.205/tcp/4001/p2p/12D3KooWQHFNeGSnCCAWiDefPDw7
 # ipfs bootstrap add /ip4/139.198.4.185/tcp/4001/p2p/12D3KooWS7KaWoaZpsNRcozjQpYptx4VH4sH5kUSTTJNYzcrW9DE
 
 ## us epoch
-ipfs boostrap add /ip4/134.209.69.224/tcp/4001/p2p/12D3KooWDv33ZkSpfJS1AvQ9kG7er26dQLpeuxt3jUgE39BMoNSa
+ipfs bootstrap add /ip4/134.209.69.224/tcp/4001/p2p/12D3KooWDv33ZkSpfJS1AvQ9kG7er26dQLpeuxt3jUgE39BMoNSa
 
 # ******* add for teaproject by jacky end ********
 
