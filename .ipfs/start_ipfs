@@ -25,15 +25,6 @@ else
   ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
   ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
 
-  # ******* add for teaproject by jacky start ********
-  ipfs id
-  ipfs config --json Experimental.Libp2pStreamMounting true
-  ipfs config --json Swarm.EnableRelayHop true
-
-  ipfs bootstrap add /ip4/139.198.14.205/tcp/4001/p2p/12D3KooWQHFNeGSnCCAWiDefPDw7xBdQbiRwAUQ5zoQixCr4dgWJ
-  ipfs bootstrap add /ip4/139.198.4.185/tcp/4001/p2p/12D3KooWS7KaWoaZpsNRcozjQpYptx4VH4sH5kUSTTJNYzcrW9DE
-  # ******* add for teaproject by jacky end ********
-
   # Set up the swarm key, if provided
 
   SWARM_KEY_FILE="$repo/swarm.key"
@@ -61,5 +52,19 @@ else
   unset IPFS_SWARM_KEY_FILE
 
 fi
+
+# ******* add for teaproject by jacky start ********
+
+ipfs config --json Experimental.Libp2pStreamMounting true
+ipfs config --json Swarm.EnableRelayHop true
+
+## china testnet-alice
+ipfs bootstrap add /ip4/139.198.14.205/tcp/4001/p2p/12D3KooWQHFNeGSnCCAWiDefPDw7xBdQbiRwAUQ5zoQixCr4dgWJ
+# ipfs bootstrap add /ip4/139.198.4.185/tcp/4001/p2p/12D3KooWS7KaWoaZpsNRcozjQpYptx4VH4sH5kUSTTJNYzcrW9DE
+
+## us epoch
+ipfs boostrap add /ip4/134.209.69.224/tcp/4001/p2p/12D3KooWDv33ZkSpfJS1AvQ9kG7er26dQLpeuxt3jUgE39BMoNSa
+
+# ******* add for teaproject by jacky end ********
 
 exec ipfs "$@"
