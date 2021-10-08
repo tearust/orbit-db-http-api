@@ -33,14 +33,18 @@ const F = {
 
     const db = await dbm.get(db_name);
 
-    let rs = 0;
+    let rs = {
+      count: 0,
+    };
     _.each(db.all, (val, key)=>{
       if(_.startsWith(key, `${tapp_id}_`)){
         const now = Date.now();
         // TODO
 
-        if(val.count > rs){
-          rs = val.count;
+        if(val.count > rs.count){
+          rs.count = val.count;
+          rs.block = val.block;
+          rs.time = val.time;
         }
       }
     });
