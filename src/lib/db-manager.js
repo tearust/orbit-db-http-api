@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const {consts} = require('../utils');
 
 class DBManager {
     constructor(orbitdb){
@@ -119,22 +120,27 @@ class DBManager {
     }
 
     async _init(){
-        // init keyvalue store
-        const key_value_name = 'key_value_store';
-        // await this.get(key_value_name, {
-        //     create: true,
-        //     type: 'keyvalue'
-        // });
 
-        const db_address = await this.orbitdb.determineAddress(key_value_name, 'keyvalue', {
+        for(let i=0, len=consts.DEFAULT_DB.length; i<len; i++){
+            const item = consts.DEFAULT_DB[i];
+
+            await this.initForEachDB(item);
+        }
+
+
+        console.log('dbm init success');
+    }
+
+    async initForEachDB(item){
+        const db_address = await this.orbitdb.determineAddress(item.name, item.type, {
             accessController: {
                 type: 'tea',
-                address: 'tearust5',
+                address: 'teaproject',
                 // write: [],
             },
-            meta: {
-                v: 1
-            }
+            // meta: {
+            //     v: 1
+            // }
         });
         const db = await this.get(db_address);
         
@@ -148,17 +154,14 @@ class DBManager {
                 const uid = list[i];
                 let aa = await db.access.grant('write', uid);
                 if(aa !== false){
-                    console.log('add write access success => '+uid);
+                    console.log('add write access success for ['+item.name+'] => '+uid);
                 }
             }
         }
     
         
-        const x = await this.db_info(db_address);
-        console.log(1, x);
-
-
-        console.log('dbm init success');
+        // const x = await this.db_info(db_address);
+        // console.log(1, x);
     }
 
 

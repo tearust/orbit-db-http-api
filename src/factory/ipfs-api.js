@@ -71,7 +71,7 @@ async function api_factory(ipfs_host, ipfs_port, orbitdb_dir, orbitdb_opts, serv
         id: process.env.SEED || 'tea'
     };
     options.identityKeysPath += '/'+options.id;
-    console.log(1, options);
+    // console.log('options =>', options);
 
     orbitdb_opts.identity = await Identities.createIdentity(options);
 
