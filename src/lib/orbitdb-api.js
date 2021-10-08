@@ -4,12 +4,18 @@ const Http2 = require('http2');
 const Http = require('http');
 const Susie = require('susie');
 
+const _ = require('lodash');
+
+const tappAction = require('../action/tapp');
+
 require('events').EventEmitter.defaultMaxListeners = 50  //Set warning higher then normal to handle many clients
 
 class OrbitdbAPI {
     constructor (dbm, server_opts) {
         let comparisons, rawiterator, getraw, unpack_contents, listener;
         let dbMiddleware, addEventListener;
+
+        this.dbm = dbm;
 
         listener = (server_opts.http1 ? Http : Http2)[server_opts.secure ? 'createSecureServer' : 'createServer'](server_opts.http2_opts);
 
@@ -269,7 +275,14 @@ class OrbitdbAPI {
            {
                 method: 'GET',
                 path: '/identity',
-                handler: (_request, _h) => dbm.identity()
+                handler: handlerWrap.bind(this, async ()=>{
+                    const d = dbm.identity();
+                    return {
+                        id: d.id,
+                        type: d.type,
+                        publicKey: d.publicKey
+                    }
+                })
             },
             {
                 method: ['POST', 'PUT'],
@@ -290,8 +303,41 @@ class OrbitdbAPI {
                 })
             },
 
+            // tapp
+            {
+                method: ['POST'],
+                path: '/tapp/views/put',
+                handler: handlerWrap.bind(this, tappAction.put_view),
+            },
+            {
+                method: ['GET'],
+                path: '/tapp/views/get',
+                handler: handlerWrap.bind(this, tappAction.get_view),
+            },
+
+
         ]);
+
+        async function handlerWrap(fn, req, h){
+            const params = _.merge(req.params, req.query, req.body, req.payload);
+        
+            try{
+                const rs = await fn(params, dbm, h);
+                return {
+                    code: 1,
+                    data: rs
+                }
+            }catch(e){
+                return {
+                    code: -1,
+                    error: e.message || e.toString(),
+                }
+            }
+            
+        };
     }
 }
+
+
 
 module.exports = OrbitdbAPI
