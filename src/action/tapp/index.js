@@ -35,17 +35,24 @@ const F = {
 
     let rs = {
       count: 0,
+      block: 0,
     };
     _.each(db.all, (val, key)=>{
       if(_.startsWith(key, `${tapp_id}_`)){
         const now = Date.now();
         // TODO
 
-        if(val.count > rs.count){
+        if(val.block && val.block > rs.block){
           rs.count = val.count;
           rs.block = val.block;
           rs.time = val.time;
         }
+        else if(val.count > rs.count){
+          rs.count = val.count;
+          rs.block = val.block;
+          rs.time = val.time;
+        }
+
       }
     });
 
