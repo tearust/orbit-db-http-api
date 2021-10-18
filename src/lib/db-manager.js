@@ -132,10 +132,12 @@ class DBManager {
     }
 
     async initForEachDB(item){
+        const nonce = process.env.NONCE || 'teaproject';
+        console.log('nonce =>', nonce);
         const db_address = await this.orbitdb.determineAddress(item.name, item.type, {
             accessController: {
                 type: 'tea',
-                address: 'teaproject',
+                address: nonce,
                 // write: [],
             },
             // meta: {
