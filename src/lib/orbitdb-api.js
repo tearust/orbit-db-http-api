@@ -303,7 +303,7 @@ class OrbitdbAPI {
                 })
             },
 
-            // tapp
+            // tapp fluencer
             {
                 method: ['POST'],
                 path: '/tapp/views/put',
@@ -315,6 +315,27 @@ class OrbitdbAPI {
                 handler: handlerWrap.bind(this, tappAction.get_view),
             },
 
+            // tapp bbs
+            {
+                method: ['POST', 'PUT'],
+                path: '/tapp/bbs/add_message',
+                handler: handlerWrap.bind(this, tappAction.bbs.add_message),
+            },
+            {
+                method: ['GET', 'POST'],
+                path: '/tapp/bbs/get_message',
+                handler: handlerWrap.bind(this, tappAction.bbs.get_message),
+            },
+            {
+                method: ['POST', 'DELETE'],
+                path: '/tapp/bbs/delete_message',
+                handler: handlerWrap.bind(this, tappAction.bbs.delete_message),
+            },
+            {
+                method: ['POST'],
+                path: '/tapp/bbs/extend_message',
+                handler: handlerWrap.bind(this, tappAction.bbs.extend_message),
+            }
 
         ]);
 

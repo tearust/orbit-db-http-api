@@ -131,7 +131,7 @@ class DBManager {
         console.log('dbm init success');
     }
 
-    async initForEachDB(item){
+    async initForEachDB(item, config=null){
         const nonce = process.env.NONCE || 'teaproject';
         console.log('nonce =>', nonce);
         const db_address = await this.orbitdb.determineAddress(item.name, item.type, {
@@ -144,7 +144,7 @@ class DBManager {
             //     v: 1
             // }
         });
-        const db = await this.get(db_address);
+        const db = await this.get(db_address, config);
         
         const me_id = this.orbitdb.identity.id;
         await db.access.grant('write', me_id);
@@ -164,6 +164,7 @@ class DBManager {
         
         // const x = await this.db_info(db_address);
         // console.log(1, x);
+        return db;
     }
 
 

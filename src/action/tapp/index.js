@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const {consts} = require('../../utils');
+const bbs = require('./bbs');
 
 const db_name = consts.KEY.tapp_views;
 const ttl = 1000*60*10;
@@ -59,6 +60,6 @@ const F = {
 
 };
 
-
+F.bbs = bbs;
 
 module.exports = F;

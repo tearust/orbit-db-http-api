@@ -5,7 +5,7 @@ const C = {
     {
       name: 'tapp_views',
       type: 'keyvalue'
-    },
+    }
   ],
 
   KEY: {}
