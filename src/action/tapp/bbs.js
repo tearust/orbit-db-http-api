@@ -115,10 +115,12 @@ const F = {
       throw 'Not found doc for msg id => '+msg_id;
     }
 
-    doc.utc_expired = utc_expired;
-    if(utc_expired < doc.utc){
-      throw 'Invalid UTC expired => Expired must bigger than UTC';
+    if(!doc.utc_expired){
+      throw 'No UTC Expired for msg id => '+msg_id;
     }
+
+    doc.utc_expired = _.toNumber(utc_expired)+_.toNumber(doc.utc_expired);
+
 
     await db.put(doc);
     return doc._id;
