@@ -2,6 +2,7 @@ const _ = require('lodash');
 const {consts, sha256} = require('../../utils');
 
 const ttl = 1000*60*10;
+const GLOBAL_DB = process.env.GLOBAL_BBS_DB || 'test';
 
 const db_map = {};
 
@@ -77,13 +78,16 @@ const F = {
 
     let tid = _.toNumber(tapp_id);
     const all = await db.query((doc)=>{
-      if(doc.tapp_id !== tid) return false;
-      if(sender && sender !== doc.sender){
-        return false;
-      }
       if(doc.utc_expired && utc > doc.utc_expired){
         return false;
       }
+      if(sender && sender !== doc.sender){
+        return false;
+      }
+
+      if(dbname === GLOBAL_DB) return true;
+      if(doc.tapp_id !== tid) return false;
+      
       return true;
     });
 
