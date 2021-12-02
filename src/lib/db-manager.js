@@ -169,14 +169,6 @@ class DBManager {
 
 
     async info(dbn){
-        try{
-
-            await this.get(dbn, {});
-        }catch(e){
-            console.error(e);
-        }
-        
-
         return await this.db_info(dbn);
     }
 }

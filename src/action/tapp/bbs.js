@@ -6,6 +6,64 @@ const GLOBAL_DB = process.env.GLOBAL_BBS_DB || 'test';
 
 const db_map = {};
 
+// cache
+const job_map = {};
+const ScheculeJob = class {
+  constructor(tapp_id, dbname){
+    this.tapp_id = tapp_id;
+    this.dbname = dbname;
+
+    this.last_job = 0;
+  }
+
+  canJob(){
+    const now = Date.now();
+
+    const job_ttl = 1000*60*1;  //20 min
+    if(now-job_ttl > this.last_job){
+      this.last_job = now;
+      return true;
+    }
+
+    return false;
+  }
+
+  async startJobForExpiredMessage(utc, dbm){
+    if(!this.canJob()){
+      return;
+    }
+
+    const db = await F.getDB(dbm, this.dbname, this.tapp_id);
+    const delete_list = await db.query((doc)=>{
+      if(!doc.utc_expired) return true;
+      if(doc.utc_expired && utc > doc.utc_expired){
+        return true;
+      }
+      
+      return false;
+    });
+    console.log(`delete expired message job [${this.dbname}] => `, delete_list.length);
+    await Promise.all(_.map(delete_list, async (item)=>{
+      await db.del(item._id);
+    }));
+    console.log(`job success at ${new Date()}`);
+  }
+};
+ScheculeJob.get = (tapp_id, dbname)=>{
+  let sj = _.get(job_map, dbname);
+  if(sj) return sj;
+
+  sj = new ScheculeJob(tapp_id, dbname);
+  _.set(job_map, dbname, sj);
+
+  return sj;
+};
+
+const startScheduleJobLoop = (tapp_id, dbname, utc, dbm)=>{
+  const sj = ScheculeJob.get(tapp_id, dbname);
+  sj.startJobForExpiredMessage(utc, dbm);
+};
+
 const F = {
   async getDB(dbm, dbname, tapp_id){
     if(!dbname){
@@ -90,6 +148,10 @@ const F = {
       
       return true;
     });
+
+    _.delay(()=>{
+      startScheduleJobLoop(tapp_id, dbname, utc, dbm);
+    }, 2000);
 
     return _.reverse(_.sortBy(all, 'utc'));
   },
