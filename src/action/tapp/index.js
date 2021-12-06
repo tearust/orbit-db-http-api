@@ -37,6 +37,7 @@ const F = {
     let rs = {
       count: 0,
       block: 0,
+      time: 0,
     };
     
     _.each(db.all, (val, key)=>{
