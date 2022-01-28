@@ -335,7 +335,18 @@ class OrbitdbAPI {
                 method: ['POST'],
                 path: '/tapp/bbs/extend_message',
                 handler: handlerWrap.bind(this, tappAction.bbs.extend_message),
-            }
+            },
+            // notification
+            {
+                method: ['POST', 'PUT'],
+                path: '/tapp/notification/add_message',
+                handler: handlerWrap.bind(this, tappAction.notification.private_message),
+            },
+            {
+                method: ['GET', 'POST'],
+                path: '/tapp/notification/get_message',
+                handler: handlerWrap.bind(this, tappAction.notification.get_message_list),
+            },
 
         ]);
 
