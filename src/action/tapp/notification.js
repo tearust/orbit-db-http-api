@@ -93,7 +93,7 @@ const F = {
     return sha256(key);
   },
   async private_message(params, dbm, h){
-    const {sender, to, utc, utc_expired, content, tapp_id} = params;
+    const {sender, to, utc, utc_expired, content, tapp_id,} = params;
     const db = await F.getDB(dbm);
 
     if(utc_expired && utc_expired < utc){
@@ -102,11 +102,16 @@ const F = {
 
     const tid = _.toNumber(tapp_id);
     const doc_id = F.doc_id(params);
+
+    const from_tapp_id = params.from_tapp_id || '';
+    const from_tapp_url = params.from_tapp_url || '';
     const doc = {
       _id: doc_id,
       sender,
       to,
       content,
+      from_tapp_id,
+      from_tapp_url,
       utc,
       utc_expired: utc_expired || 0,
       tapp_id: tid,
