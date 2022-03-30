@@ -2,6 +2,7 @@ const _ = require('lodash');
 const {consts} = require('../../utils');
 const bbs = require('./bbs');
 const notification = require('./notification');
+const entity = require('./entity');
 
 const db_name = consts.KEY.tapp_views;
 const ttl = 1000*60*10;
@@ -64,5 +65,6 @@ const F = {
 
 F.bbs = bbs;
 F.notification = notification;
+F.entity = entity;
 
 module.exports = F;

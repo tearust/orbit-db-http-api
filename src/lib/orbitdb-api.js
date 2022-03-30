@@ -348,6 +348,23 @@ class OrbitdbAPI {
                 handler: handlerWrap.bind(this, tappAction.notification.get_message_list),
             },
 
+            // entity
+            {
+                method: ['POST', 'PUT'],
+                path: '/tapp/entity/insert',
+                handler: handlerWrap.bind(this, tappAction.entity.insert),
+            },
+            {
+                method: ['GET', 'POST'],
+                path: '/tapp/entity/read',
+                handler: handlerWrap.bind(this, tappAction.entity.read),
+            },
+            {
+                method: ['POST', 'DELETE'],
+                path: '/tapp/entity/delete',
+                handler: handlerWrap.bind(this, tappAction.entity.delete),
+            },
+
         ]);
 
         async function handlerWrap(fn, req, h){
